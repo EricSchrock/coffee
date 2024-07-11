@@ -28,3 +28,11 @@ Credit: @monsieur-le-git
 
 
 ## Results
+
+
+## Running the Project
+
+```sh
+conda env create -f environment.yml
+conda activate coffee
+```
