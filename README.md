@@ -21,6 +21,12 @@ The dataset contains four tables with the following relationships.
 
 Credit: @monsieur-le-git
 
+### Exploration
+
+The first target question is tuned to the data available in the dataset.
+
+![menu bar chart](doc/menu-bar-chart.png)
+
 ## Workflow
 
 
@@ -35,4 +41,5 @@ Credit: @monsieur-le-git
 ```sh
 conda env create -f environment.yml
 conda activate coffee
+python src/explore.py /path/to/dataset
 ```
