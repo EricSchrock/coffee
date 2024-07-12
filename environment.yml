@@ -1,6 +1,10 @@
 name: coffee
+channels:
+  - defaults
+  - conda-forge
 dependencies:
   - python=3.12
   - pandas=2.2
   - matplotlib=3.8
   - seaborn=0.13
+  - matplotlib-venn=0.11

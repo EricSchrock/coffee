@@ -25,11 +25,11 @@ Credit: @monsieur-le-git
 
 The first target question is tuned to the data available in the dataset.
 
+![menu date histogram](doc/menu-date-histogram.png)
+
 ![menu bar chart](doc/menu-bar-chart.png)
 
-
-
-![menu date histogram](doc/menu-date-histogram.png)
+![menu venn diagram](doc/menu-venn-diagram.png)
 
 ## Workflow
 
