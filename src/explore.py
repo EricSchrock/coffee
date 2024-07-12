@@ -39,7 +39,7 @@ def explore_menu_table(menu_df: pd.DataFrame) -> None:
     sns.set_theme()
     bar_df.plot(kind='barh', stacked=True, color=['green', 'grey', 'lightgrey'], xlabel="Number of Records", title="Applicable Menu Table Attributes")
     plt.savefig("doc/menu-bar-chart.png", bbox_inches='tight')
-    plt.clf()
+    plt.close()
 
     menu_df['year'] = pd.to_datetime(menu_df.date, errors='coerce').dt.year
     menu_df['decade'] = menu_df.year - (menu_df.year % 10)
@@ -48,7 +48,7 @@ def explore_menu_table(menu_df: pd.DataFrame) -> None:
 
     menu_df['decade'].plot(kind='hist', x='date', xlabel="Decade", ylabel="Count", title="Number of Menus By Decade", bins=range(1850, 2011, 10))
     plt.savefig("doc/menu-date-histogram.png", bbox_inches='tight')
-    plt.clf()
+    plt.close()
 
 def main() -> None:
     parser = ArgumentParser()

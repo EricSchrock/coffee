@@ -5,10 +5,11 @@ from matplotlib_venn import venn3_unweighted
 import pandas as pd
 import re
 import seaborn as sns
+import sqlite3
 from time import time
 from typing import Callable, List, Tuple
 
-from regex import is_new_york, is_1900_to_1909, is_dollars
+from regex import is_new_york, is_1900_to_1909, is_dollars, is_cup_of_coffee
 
 
 def remove_leading_and_trailing_whitespace(menu_df: pd.DataFrame, page_df: pd.DataFrame, item_df: pd.DataFrame, dish_df: pd.DataFrame) -> None:
@@ -85,6 +86,40 @@ def profile_dish_data(dish_df: pd.DataFrame) -> int:
     return 5 #todo: implement
 
 @timer
+def query_data(menu_df: pd.DataFrame, page_df: pd.DataFrame, item_df: pd.DataFrame, dish_df: pd.DataFrame) -> List[float]:
+    def regexp(expr, item):
+        regex = re.compile(expr, re.IGNORECASE)
+        return bool(regex.search(item))
+
+    con = sqlite3.connect(":memory:")
+    con.create_function("REGEXP", 2, regexp)
+    cur = con.cursor()
+
+    menu_df.to_sql("Menu", con, if_exists='replace', index=False, method='multi', chunksize=10_000)
+    page_df.to_sql("Page", con, if_exists='replace', index=False, method='multi', chunksize=10_000)
+    item_df.to_sql("Item", con, if_exists='replace', index=False, method='multi', chunksize=10_000)
+    dish_df.to_sql("Dish", con, if_exists='replace', index=False, method='multi', chunksize=10_000)
+
+    results = cur.execute("""
+        SELECT item.price FROM item
+        INNER JOIN dish ON item.dish_id = dish.id
+        INNER JOIN page ON item.menu_page_id = page.id
+        INNER JOIN menu ON page.menu_id = menu.id
+        WHERE dish.name IS NOT NULL AND dish.name REGEXP ?
+        AND menu.place IS NOT NULL AND menu.place REGEXP ?
+        AND date BETWEEN 1900 AND 1909
+        AND menu.currency = "Dollars"
+        AND item.price IS NOT NULL
+        AND item.price < 1;
+        """, [is_cup_of_coffee, is_new_york]).fetchall()
+
+    con.close()
+
+    prices = [ result[0] for result in results ]
+
+    return prices
+
+@timer
 def clean_data(menu_df: pd.DataFrame, page_df: pd.DataFrame, item_df: pd.DataFrame, dish_df: pd.DataFrame) -> None:
     cleaning_routines = [
         remove_leading_and_trailing_whitespace,
@@ -113,7 +148,7 @@ def save_menu_profile(dirty: List[int], clean: List[int]) -> None:
     plt.title("Menus With Target Values (clean data)")
     plt.tight_layout()
     plt.savefig("doc/menu-venn-diagram.png", bbox_inches='tight')
-    plt.clf()
+    plt.close()
 
 @timer
 def save_dish_profile(dirty: int, clean: int) -> None:
@@ -121,7 +156,18 @@ def save_dish_profile(dirty: int, clean: int) -> None:
     plt.bar(x=['Dirty Data', 'Clean Data'], height=[dirty, clean])
     plt.title('Dishes Synonymous with "Cup of Coffee"')
     plt.savefig("doc/dish-name-coffee-bar-chart.png", bbox_inches='tight')
-    plt.clf()
+    plt.close()
+
+@timer
+def save_query_result(dirty: List[float], clean: List[float]) -> None:
+    sns.set_theme()
+    plt.hist([dirty, clean], color=['r','b'], alpha=0.5)
+    plt.title("Price of a Cup of Coffee in New York State (1900 - 1909)")
+    plt.xlabel("Price ($)")
+    plt.ylabel("Menu Appearances (count)")
+    plt.legend(loc="upper right", labels=['Dirty', 'Clean'])
+    plt.savefig(f"doc/coffee-price-histogram.png", bbox_inches='tight')
+    plt.close()
 
 @timer
 def main() -> None:
@@ -133,14 +179,17 @@ def main() -> None:
 
     menu_profile_dirty = profile_menu_data(menu_df)
     dish_profile_dirty = profile_dish_data(dish_df)
+    prices_dirty = query_data(menu_df, page_df, item_df, dish_df)
 
     clean_data(menu_df, page_df, item_df, dish_df)
 
     menu_profile_clean = profile_menu_data(menu_df)
     dish_profile_clean = profile_dish_data(dish_df)
+    prices_clean = query_data(menu_df, page_df, item_df, dish_df)
 
     save_menu_profile(menu_profile_dirty, menu_profile_clean)
     save_dish_profile(dish_profile_dirty, dish_profile_clean)
+    save_query_result(prices_dirty, prices_clean)
 
 
 if __name__ == "__main__":

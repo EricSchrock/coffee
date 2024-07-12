@@ -53,9 +53,8 @@ TBD (diagram)
 
 ## Results
 
-### Price of a Cup of Coffee in New York (1900 - 1909)
-
-TBD
+### Price of a Cup of Coffee
+![coffee price histogram](doc/coffee-price-histogram.png)
 
 ### Impact of Data Cleaning
 
