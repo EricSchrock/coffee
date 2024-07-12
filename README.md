@@ -33,12 +33,15 @@ The first target question is tuned to the data available in the dataset.
 
 ## Workflow
 
+TBD
 
 ## Cleaning
 
+TBD
 
 ## Results
 
+TBD
 
 ## Running the Project
 
@@ -47,3 +50,7 @@ conda env create -f environment.yml
 conda activate coffee
 python src/explore.py /path/to/dataset
 ```
+
+## Testing the Project
+
+TBD
