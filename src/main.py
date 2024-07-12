@@ -28,6 +28,12 @@ def repair_menu_currency_dollars_spelling(menu_df, page_df, item_df, dish_df) ->
     regex = re.compile(r"^(?:odllars|dlolars|dolalrs|dollras|dollasr|ollars|dllars|dolars|dollrs|dollas|dollar|[^d]ollars|d[^o]llars|do[^l]lars|dol[^l]ars|doll[^a]rs|dolla[^r]s|dollar[^s])$", re.IGNORECASE)
     menu_df['currency'] = menu_df['currency'].str.replace(regex, 'Dollars', regex=True)
 
+def repair_menu_currency_convert_cents_to_dollars(menu_df, page_df, item_df, dish_df) -> None:
+    menu_ids = menu_df.loc[menu_df['currency'] == 'Cents', 'id']
+    menu_df.loc[menu_df['currency'] == 'Cents', 'currency'] = "Dollars"
+    page_ids = page_df.loc[page_df['menu_id'].isin(menu_ids), 'id']
+    item_df.loc[item_df['menu_page_id'].isin(page_ids) & item_df['price'].notnull(), 'price'] /= 100
+
 def timer(func: Callable) -> Callable:
     @functools.wraps(func)
     def wrapper(*args, **kwargs):
@@ -69,6 +75,7 @@ def clean_data(menu_df: pd.DataFrame, page_df: pd.DataFrame, item_df: pd.DataFra
         repair_menu_date_outside_expected_range,
         repair_menu_place_new_york_spelling,
         repair_menu_currency_dollars_spelling,
+        repair_menu_currency_convert_cents_to_dollars,
     ]
 
     for cleaning_routine in cleaning_routines:
