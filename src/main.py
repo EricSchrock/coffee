@@ -57,7 +57,7 @@ def load_data(dataset_path: str) -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFra
     return menu_df, page_df, item_df, dish_df
 
 @timer
-def profile_data(menu_df: pd.DataFrame) -> List[int]:
+def profile_menu_data(menu_df: pd.DataFrame) -> List[int]:
     place_ny         =  menu_df['place']   .str.contains(is_new_york,     na=False)
     date_1900s       =  menu_df['date']    .str.contains(is_1900_to_1909, na=False)
     currency_dollars =  menu_df['currency'].str.contains(is_dollars,      na=False)
@@ -71,6 +71,10 @@ def profile_data(menu_df: pd.DataFrame) -> List[int]:
         menu_df[~place_ny &  date_1900s &  currency_dollars]['id'].size,
         menu_df[ place_ny &  date_1900s &  currency_dollars]['id'].size
     ]
+
+@timer
+def profile_dish_data(dish_df: pd.DataFrame) -> int:
+    return 5 #todo: implement
 
 @timer
 def clean_data(menu_df: pd.DataFrame, page_df: pd.DataFrame, item_df: pd.DataFrame, dish_df: pd.DataFrame) -> None:
@@ -87,7 +91,7 @@ def clean_data(menu_df: pd.DataFrame, page_df: pd.DataFrame, item_df: pd.DataFra
         cleaning_routine(menu_df, page_df, item_df, dish_df)
 
 @timer
-def save_profile(dirty: List[int], clean: List[int]) -> None:
+def save_menu_profile(dirty: List[int], clean: List[int]) -> None:
     labels = ["New York", "1900 - 1909", "Dollars"]
     colors = ['teal', 'purple', 'blue']
     sns.set_theme()
@@ -103,6 +107,14 @@ def save_profile(dirty: List[int], clean: List[int]) -> None:
     plt.clf()
 
 @timer
+def save_dish_profile(dirty: int, clean: int) -> None:
+    sns.set_theme()
+    plt.bar(x=['Dirty Data', 'Clean Data'], height=[dirty, clean])
+    plt.title('Dishes Synonymous with "Cup of Coffee"')
+    plt.savefig("doc/dish-name-coffee-bar-chart.png", bbox_inches='tight')
+    plt.clf()
+
+@timer
 def main() -> None:
     parser = ArgumentParser()
     parser.add_argument('dataset_path', help='Path to the directory of the dataset to run on')
@@ -110,13 +122,16 @@ def main() -> None:
 
     menu_df, page_df, item_df, dish_df = load_data(args.dataset_path)
 
-    profile_dirty = profile_data(menu_df)
+    menu_profile_dirty = profile_menu_data(menu_df)
+    dish_profile_dirty = profile_dish_data(dish_df)
 
     clean_data(menu_df, page_df, item_df, dish_df)
 
-    profile_clean = profile_data(menu_df)
+    menu_profile_clean = profile_menu_data(menu_df)
+    dish_profile_clean = profile_dish_data(dish_df)
 
-    save_profile(profile_dirty, profile_clean)
+    save_menu_profile(menu_profile_dirty, menu_profile_clean)
+    save_dish_profile(dish_profile_dirty, dish_profile_clean)
 
 
 if __name__ == "__main__":

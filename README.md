@@ -49,6 +49,8 @@ The goal of data cleaning is to increase the number of records from the menu and
 
 ![menu venn diagram](doc/menu-venn-diagram.png)
 
+![dish name coffee bar chart](doc/dish-name-coffee-bar-chart.png)
+
 ## Running the Project
 
 ```sh
