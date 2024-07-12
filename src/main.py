@@ -6,6 +6,7 @@ import pandas as pd
 import re
 import seaborn as sns
 import sqlite3
+from statistics import mean, median
 from time import time
 from typing import Callable, List, Tuple
 
@@ -167,6 +168,23 @@ def save_query_result(dirty: List[float], clean: List[float]) -> None:
     plt.xlabel("Price ($)")
     plt.ylabel("Menu Appearances (count)")
     plt.legend(loc="upper right", labels=['Dirty', 'Clean'])
+    plt.axvline(mean(dirty),   color='r', linestyle='dashed', linewidth=1, alpha=0.75)
+    plt.axvline(median(dirty), color='r', linestyle='dashed', linewidth=1, alpha=0.75)
+    plt.axvline(mean(clean),   color='b', linestyle='dashed', linewidth=1, alpha=0.75)
+    plt.axvline(median(clean), color='b', linestyle='dashed', linewidth=1, alpha=0.75)
+    x = max([mean(dirty), median(dirty), mean(clean), median(clean)]) * 1.5
+    _, y = plt.ylim()
+    font = plt.rcParams['font.family']
+    plt.rcParams['font.family'] = 'monospace'
+    plt.text(x, y * 0.90, f"Count  (dirty): {len(dirty):4}",      color='r', alpha=0.75)
+    plt.text(x, y * 0.85, f"Max    (dirty): {max(dirty):.2f}",    color='r', alpha=0.75)
+    plt.text(x, y * 0.80, f"Mean   (dirty): {mean(dirty):.2f}",   color='r', alpha=0.75)
+    plt.text(x, y * 0.75, f"Median (dirty): {median(dirty):.2f}", color='r', alpha=0.75)
+    plt.text(x, y * 0.65, f"Count  (clean): {len(clean):4}",      color='b', alpha=0.75)
+    plt.text(x, y * 0.60, f"Max    (clean): {max(clean):.2f}",    color='b', alpha=0.75)
+    plt.text(x, y * 0.55, f"Mean   (clean): {mean(clean):.2f}",   color='b', alpha=0.75)
+    plt.text(x, y * 0.50, f"Median (clean): {median(clean):.2f}", color='b', alpha=0.75)
+    plt.rcParams['font.family'] = font
     plt.savefig(f"doc/coffee-price-histogram.png", bbox_inches='tight')
     plt.close()
 
