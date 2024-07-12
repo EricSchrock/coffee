@@ -38,7 +38,7 @@ def explore_menu_table(menu_df: pd.DataFrame) -> None:
     )
 
     sns.set_theme()
-    bar_df.plot(kind='barh', stacked=True, color=['green', 'grey', 'lightgrey'], xlabel="Number of records", title="Applicable Menu Table Attributes")
+    bar_df.plot(kind='barh', stacked=True, color=['green', 'grey', 'lightgrey'], xlabel="Number of Records", title="Applicable Menu Table Attributes")
     plt.savefig("doc/menu-bar-chart.png", bbox_inches='tight')
     plt.clf()
 
