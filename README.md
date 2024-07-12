@@ -81,6 +81,6 @@ python src/main.py /path/to/dataset
 ## Testing the Project
 
 ```sh
-mypy src/explore.py
-mypy src/main.py
+mypy src/*.py
+python -m unittest discover -s src
 ```
