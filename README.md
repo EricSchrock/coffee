@@ -27,6 +27,10 @@ The first target question is tuned to the data available in the dataset.
 
 ![menu bar chart](doc/menu-bar-chart.png)
 
+
+
+![menu date histogram](doc/menu-date-histogram.png)
+
 ## Workflow
 
 

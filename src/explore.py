@@ -39,8 +39,16 @@ def explore_menu_table(menu_df: pd.DataFrame) -> None:
     bar_df = pd.DataFrame({'In target range': target, 'Other value': other, 'No value': empty}, index=['currency', 'date', 'place'])
     bar_df.plot(kind='barh', stacked=True, color=['green', 'grey', 'lightgrey'], xlabel="Number of records", title="Applicable Menu Table Attributes")
     plt.savefig("doc/menu-bar-chart.png", bbox_inches='tight')
+    plt.clf()
 
-    #todo: Histogram of menus per decade
+    menu_df['year'] = pd.to_datetime(menu_df.date, errors='coerce').dt.year
+    menu_df['decade'] = menu_df.year - (menu_df.year % 10)
+
+    assert menu_df[menu_df['decade'] == 1900.0]['decade'].size == menus_from_1900_to_1909['date'].size, "Invalid date range assumption"
+
+    menu_df['decade'].plot(kind='hist', x='date', xlabel="Decade", title="Menus By Decade", bins=range(1850, 2011, 10))
+    plt.savefig("doc/menu-date-histogram.png", bbox_inches='tight')
+
     #todo: Venn diagram of menus in NY, from 1900-1909, and in Dollars
         #todo: https://stackoverflow.com/questions/18079563/finding-the-intersection-between-two-series-in-pandas
         #todo: matplotlib_venn (get help from chatGPT)
