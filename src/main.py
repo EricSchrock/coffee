@@ -3,12 +3,17 @@ import functools
 import matplotlib.pyplot as plt
 from matplotlib_venn import venn3_unweighted
 import pandas as pd
+import re
 import seaborn as sns
 from time import time
 from typing import Callable, List, Tuple
 
 from regex import is_new_york, is_1900_to_1909, is_dollars
 
+
+def repair_menu_date_from_call_number(menu_df, page_df, item_df, dish_df) -> None:
+    regex = re.compile(r"^[0-9][0-9][0-9][0-9]-.*")
+    menu_df.loc[menu_df['date'].isna() & menu_df['call_number'].str.contains(regex, na=False), 'date'] = menu_df['call_number'].str[:4]
 
 def timer(func: Callable) -> Callable:
     @functools.wraps(func)
@@ -47,6 +52,7 @@ def profile_data(menu_df: pd.DataFrame) -> List[int]:
 @timer
 def clean_data(menu_df: pd.DataFrame, page_df: pd.DataFrame, item_df: pd.DataFrame, dish_df: pd.DataFrame) -> None:
     cleaning_routines = [
+        repair_menu_date_from_call_number
     ]
 
     for cleaning_routine in cleaning_routines:
