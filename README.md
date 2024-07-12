@@ -35,7 +35,21 @@ TBD (diagram)
 
 ## Cleaning
 
-TBD (table)
+| Table    | Attribute   | Change |
+| -------- | ----------- | ------ |
+| Menu     | date        | Trim leading and trailing whitespace |
+| Menu     | call_number | Trim leading and trailing whitespace |
+| Menu     | place       | Trim leading and trailing whitespace |
+| Menu     | currency    | Trim leading and trailing whitespace |
+| MenuItem | price       | Trim leading and trailing whitespace |
+| Dish     | name        | Trim leading and trailing whitespace |
+| Menu     | date        | Set empty dates to year from `call_number` |
+| Menu     | date        | Repair typos observed in manual data exploration |
+| Menu     | place       | Repair misspellings of "New York" |
+| Menu     | currency    | Repair misspellings of "Dollars" |
+| Menu     | currency    | Change from "Cents" to "Dollars" |
+| MenuItem | price       | Divide by 100 (`Menu` `currency` changed from "Cents" to "Dollars") |
+| Dish     | name        | Repair misspellings of "Coffee" |
 
 ## Results
 
