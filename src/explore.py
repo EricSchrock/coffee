@@ -30,9 +30,9 @@ def explore_menu_table(menu_df: pd.DataFrame) -> None:
     assert menu_df['place'].size == menu_df['date'].size == menu_df['currency'].size, "Invalid attribute length assumption"
 
     bar_df = pd.DataFrame({
-            'In target range': [menu_df[currency_dollars]['currency'].size, menu_df[date_1900s]['date'].size, menu_df[place_ny]   ['place'].size],
-            'Other value':     [menu_df[currency_other]  ['currency'].size, menu_df[date_other]['date'].size, menu_df[place_other]['place'].size],
-            'No value':        [menu_df[currency_null]   ['currency'].size, menu_df[date_null] ['date'].size, menu_df[place_null] ['place'].size]
+            'Target value': [menu_df[currency_dollars]['currency'].size, menu_df[date_1900s]['date'].size, menu_df[place_ny]   ['place'].size],
+            'Other value':  [menu_df[currency_other]  ['currency'].size, menu_df[date_other]['date'].size, menu_df[place_other]['place'].size],
+            'No value':     [menu_df[currency_null]   ['currency'].size, menu_df[date_null] ['date'].size, menu_df[place_null] ['place'].size]
         },
         index=['currency', 'date', 'place']
     )
