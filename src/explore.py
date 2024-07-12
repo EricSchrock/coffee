@@ -1,6 +1,5 @@
 from argparse import ArgumentParser
 import matplotlib.pyplot as plt
-from matplotlib_venn import venn3_unweighted
 import pandas as pd
 import seaborn as sns
 
@@ -51,27 +50,12 @@ def explore_menu_table(menu_df: pd.DataFrame) -> None:
     plt.savefig("doc/menu-date-histogram.png", bbox_inches='tight')
     plt.clf()
 
-    venn3_unweighted(subsets=[
-                            menu_df[ place_ny & ~date_1900s & ~currency_dollars]['id'].size,
-                            menu_df[~place_ny &  date_1900s & ~currency_dollars]['id'].size,
-                            menu_df[ place_ny &  date_1900s & ~currency_dollars]['id'].size,
-                            menu_df[~place_ny & ~date_1900s &  currency_dollars]['id'].size,
-                            menu_df[ place_ny & ~date_1900s &  currency_dollars]['id'].size,
-                            menu_df[~place_ny &  date_1900s &  currency_dollars]['id'].size,
-                            menu_df[ place_ny &  date_1900s &  currency_dollars]['id'].size
-                        ],
-                     set_labels=["New York", "1900 - 1909", "Dollars"],
-                     set_colors=['teal', 'purple', 'blue'])
-    plt.title("Overlap Between Applicable Menu Table Attributes")
-    plt.savefig("doc/menu-venn-diagram.png", bbox_inches='tight')
-    plt.clf()
-
 def main() -> None:
     parser = ArgumentParser()
     parser.add_argument('dataset_path', help='Path to the directory of the dataset to run on')
     args = parser.parse_args()
 
-    menu_df= load_data(args.dataset_path)
+    menu_df = load_data(args.dataset_path)
 
     explore_menu_table(menu_df)
 

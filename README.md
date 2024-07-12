@@ -29,19 +29,25 @@ The first target question is tuned to the data available in the dataset.
 
 ![menu bar chart](doc/menu-bar-chart.png)
 
-![menu venn diagram](doc/menu-venn-diagram.png)
-
 ## Workflow
 
-TBD
+TBD (diagram)
 
 ## Cleaning
 
-TBD
+TBD (table)
 
 ## Results
 
+### Price of a Cup of Coffee in New York (1900 - 1909)
+
 TBD
+
+### Impact of Data Cleaning
+
+The goal of data cleaning is to increase the number of records from the menu and dish tables that meet the target value for every applicable attribute.
+
+![menu venn diagram](doc/menu-venn-diagram.png)
 
 ## Running the Project
 
@@ -49,6 +55,7 @@ TBD
 conda env create -f environment.yml
 conda activate coffee
 python src/explore.py /path/to/dataset
+python src/main.py /path/to/dataset
 ```
 
 ## Testing the Project
