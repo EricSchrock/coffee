@@ -47,7 +47,7 @@ TBD (diagram)
 | Menu     | date        | Repair typos observed in manual data exploration |
 | Menu     | place       | Repair misspellings of "New York" |
 | Menu     | currency    | Repair misspellings of "Dollars" |
-| Menu     | currency    | Change from "Cents" to "Dollars" |
+| Menu     | currency    | Change instances of "Cents" to "Dollars" (communize US currency) |
 | MenuItem | price       | Divide by 100 (`Menu` `currency` changed from "Cents" to "Dollars") |
 | Dish     | name        | Repair misspellings of "Coffee" |
 
