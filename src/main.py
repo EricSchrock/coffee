@@ -22,7 +22,7 @@ def remove_leading_and_trailing_whitespace(menu_df: pd.DataFrame, page_df: pd.Da
     dish_df['name'] = dish_df['name'].apply(lambda x: x.strip() if type(x) == str else x)
 
 def repair_menu_date_from_call_number(menu_df: pd.DataFrame, page_df: pd.DataFrame, item_df: pd.DataFrame, dish_df: pd.DataFrame) -> None:
-    regex = re.compile(r"^[0-9][0-9][0-9][0-9]-.*")
+    regex = r"^[0-9][0-9][0-9][0-9]-.*"
     menu_df.loc[menu_df['date'].isna() & menu_df['call_number'].str.contains(regex, na=False), 'date'] = menu_df['call_number'].str[:4]
 
 def repair_menu_date_outside_expected_range(menu_df: pd.DataFrame, page_df: pd.DataFrame, item_df: pd.DataFrame, dish_df: pd.DataFrame) -> None:
@@ -31,11 +31,11 @@ def repair_menu_date_outside_expected_range(menu_df: pd.DataFrame, page_df: pd.D
     menu_df['date'] = menu_df['date'].str.replace(r"^2928", "1928", regex=True)
 
 def repair_menu_place_new_york_spelling(menu_df: pd.DataFrame, page_df: pd.DataFrame, item_df: pd.DataFrame, dish_df: pd.DataFrame) -> None:
-    regex = re.compile(r"enw york|nwe york|ne wyork|newy ork|new yrok|new yokr|\bew york|nw york|ne york|newyork|new ork|new yrk|new yok|new yor\b|[^n]ew york|n[^e]w york|ne[^w] york|new[^ ]york|new [^y]ork|new y[^o]rk|new yo[^r]k|new yor[^k]", re.IGNORECASE)
+    regex = r"(?i)enw york|nwe york|ne wyork|newy ork|new yrok|new yokr|\bew york|nw york|ne york|newyork|new ork|new yrk|new yok|new yor\b|[^n]ew york|n[^e]w york|ne[^w] york|new[^ ]york|new [^y]ork|new y[^o]rk|new yo[^r]k|new yor[^k]"
     menu_df['place'] = menu_df['place'].str.replace(regex, 'NEW YORK', regex=True)
 
 def repair_menu_currency_dollars_spelling(menu_df: pd.DataFrame, page_df: pd.DataFrame, item_df: pd.DataFrame, dish_df: pd.DataFrame) -> None:
-    regex = re.compile(r"^(?:odllars|dlolars|dolalrs|dollras|dollasr|ollars|dllars|dolars|dollrs|dollas|dollar|[^d]ollars|d[^o]llars|do[^l]lars|dol[^l]ars|doll[^a]rs|dolla[^r]s|dollar[^s])$", re.IGNORECASE)
+    regex = r"(?i)^(?:odllars|dlolars|dolalrs|dollras|dollasr|ollars|dllars|dolars|dollrs|dollas|dollar|[^d]ollars|d[^o]llars|do[^l]lars|dol[^l]ars|doll[^a]rs|dolla[^r]s|dollar[^s])$"
     menu_df['currency'] = menu_df['currency'].str.replace(regex, 'Dollars', regex=True)
 
 def repair_menu_currency_convert_cents_to_dollars(menu_df: pd.DataFrame, page_df: pd.DataFrame, item_df: pd.DataFrame, dish_df: pd.DataFrame) -> None:
@@ -45,7 +45,7 @@ def repair_menu_currency_convert_cents_to_dollars(menu_df: pd.DataFrame, page_df
     item_df.loc[item_df['menu_page_id'].isin(page_ids) & item_df['price'].notnull(), 'price'] /= 100
 
 def repair_dish_name_coffee_spelling(menu_df: pd.DataFrame, page_df: pd.DataFrame, item_df: pd.DataFrame, dish_df: pd.DataFrame) -> None:
-    regex = re.compile(r"\b(?:ocffee|cfofee|cofefe|offee|cffee|cofee|coffe|[^ct]offee|c[^o]ffee|co[^f]fee|cof[^f]ee|coff[^e]e|coffe[^e])\b", re.IGNORECASE)
+    regex = r"(?i)\b(?:ocffee|cfofee|cofefe|offee|cffee|cofee|coffe|[^ct]offee|c[^o]ffee|co[^f]fee|cof[^f]ee|coff[^e]e|coffe[^e])\b"
     dish_df['name'] = dish_df['name'].str.replace(regex, 'Coffee', regex=True)
 
 def timer(func: Callable) -> Callable:

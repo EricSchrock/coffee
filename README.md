@@ -75,4 +75,7 @@ python src/main.py /path/to/dataset
 
 ## Testing the Project
 
-TBD
+```sh
+mypy src/explore.py
+mypy src/main.py
+```
