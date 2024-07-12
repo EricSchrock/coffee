@@ -64,11 +64,16 @@ The goal of data cleaning is to increase the number of records from the menu and
 
 ![dish name coffee bar chart](doc/dish-name-coffee-bar-chart.png)
 
-## Running the Project
+## Creating the Project Environment
 
 ```sh
 conda env create -f environment.yml
 conda activate coffee
+```
+
+## Running the Project
+
+```sh
 python src/explore.py /path/to/dataset
 python src/main.py /path/to/dataset
 ```
