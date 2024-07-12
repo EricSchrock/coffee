@@ -34,6 +34,10 @@ def repair_menu_currency_convert_cents_to_dollars(menu_df, page_df, item_df, dis
     page_ids = page_df.loc[page_df['menu_id'].isin(menu_ids), 'id']
     item_df.loc[item_df['menu_page_id'].isin(page_ids) & item_df['price'].notnull(), 'price'] /= 100
 
+def repair_dish_name_coffee_spelling(menu_df, page_df, item_df, dish_df) -> None:
+    regex = re.compile(r"\b(?:ocffee|cfofee|cofefe|offee|cffee|cofee|coffe|[^ct]offee|c[^o]ffee|co[^f]fee|cof[^f]ee|coff[^e]e|coffe[^e])\b", re.IGNORECASE)
+    dish_df['name'] = dish_df['name'].str.replace(regex, 'Coffee', regex=True)
+
 def timer(func: Callable) -> Callable:
     @functools.wraps(func)
     def wrapper(*args, **kwargs):
@@ -76,6 +80,7 @@ def clean_data(menu_df: pd.DataFrame, page_df: pd.DataFrame, item_df: pd.DataFra
         repair_menu_place_new_york_spelling,
         repair_menu_currency_dollars_spelling,
         repair_menu_currency_convert_cents_to_dollars,
+        repair_dish_name_coffee_spelling,
     ]
 
     for cleaning_routine in cleaning_routines:
