@@ -24,6 +24,10 @@ def repair_menu_place_new_york_spelling(menu_df, page_df, item_df, dish_df) -> N
     regex = re.compile(r"enw york|nwe york|ne wyork|newy ork|new yrok|new yokr|\bew york|nw york|ne york|newyork|new ork|new yrk|new yok|new yor\b|[^n]ew york|n[^e]w york|ne[^w] york|new[^ ]york|new [^y]ork|new y[^o]rk|new yo[^r]k|new yor[^k]", re.IGNORECASE)
     menu_df['place'] = menu_df['place'].str.replace(regex, 'NEW YORK', regex=True)
 
+def repair_menu_currency_dollars_spelling(menu_df, page_df, item_df, dish_df) -> None:
+    regex = re.compile(r"^(?:odllars|dlolars|dolalrs|dollras|dollasr|ollars|dllars|dolars|dollrs|dollas|dollar|[^d]ollars|d[^o]llars|do[^l]lars|dol[^l]ars|doll[^a]rs|dolla[^r]s|dollar[^s])$", re.IGNORECASE)
+    menu_df['currency'] = menu_df['currency'].str.replace(regex, 'Dollars', regex=True)
+
 def timer(func: Callable) -> Callable:
     @functools.wraps(func)
     def wrapper(*args, **kwargs):
@@ -64,6 +68,7 @@ def clean_data(menu_df: pd.DataFrame, page_df: pd.DataFrame, item_df: pd.DataFra
         repair_menu_date_from_call_number,
         repair_menu_date_outside_expected_range,
         repair_menu_place_new_york_spelling,
+        repair_menu_currency_dollars_spelling,
     ]
 
     for cleaning_routine in cleaning_routines:
