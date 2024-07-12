@@ -101,17 +101,18 @@ def query_data(menu_df: pd.DataFrame, page_df: pd.DataFrame, item_df: pd.DataFra
     dish_df.to_sql("Dish", con, if_exists='replace', index=False, method='multi', chunksize=10_000)
 
     results = cur.execute("""
-        SELECT item.price FROM item
-        INNER JOIN dish ON item.dish_id = dish.id
-        INNER JOIN page ON item.menu_page_id = page.id
-        INNER JOIN menu ON page.menu_id = menu.id
-        WHERE dish.name IS NOT NULL AND dish.name REGEXP ?
-        AND menu.place IS NOT NULL AND menu.place REGEXP ?
-        AND date BETWEEN 1900 AND 1909
-        AND menu.currency = "Dollars"
-        AND item.price IS NOT NULL
-        AND item.price < 1;
-        """, [is_cup_of_coffee, is_new_york]).fetchall()
+        SELECT price FROM item
+        WHERE menu_page_id IN (
+            SELECT id FROM page
+            WHERE menu_id IN (
+                SELECT id FROM menu
+                WHERE menu.place IS NOT NULL AND menu.place REGEXP ?
+                AND date BETWEEN 1900 AND 1909
+                AND currency = "Dollars"))
+        AND dish_id IN (SELECT id FROM dish WHERE dish.name IS NOT NULL AND dish.name REGEXP ?)
+        AND price IS NOT NULL
+        AND price < 1;
+        """, [is_new_york, is_cup_of_coffee]).fetchall()
 
     con.close()
 
