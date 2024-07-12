@@ -153,7 +153,7 @@ def save_menu_profile(dirty: List[int], clean: List[int]) -> None:
 @timer
 def save_dish_profile(dirty: int, clean: int) -> None:
     sns.set_theme()
-    plt.bar(x=['Dirty Data', 'Clean Data'], height=[dirty, clean])
+    plt.bar(x=['Dirty Data', 'Clean Data'], height=[dirty, clean], alpha=0.75)
     plt.title('Dishes Synonymous with "Cup of Coffee"')
     plt.savefig("doc/dish-name-coffee-bar-chart.png", bbox_inches='tight')
     plt.close()
@@ -161,7 +161,7 @@ def save_dish_profile(dirty: int, clean: int) -> None:
 @timer
 def save_query_result(dirty: List[float], clean: List[float]) -> None:
     sns.set_theme()
-    plt.hist([dirty, clean], color=['r','b'], alpha=0.5)
+    plt.hist([dirty, clean], color=['r','b'], alpha=0.75)
     plt.title("Price of a Cup of Coffee in New York State (1900 - 1909)")
     plt.xlabel("Price ($)")
     plt.ylabel("Menu Appearances (count)")

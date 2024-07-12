@@ -37,7 +37,7 @@ def explore_menu_table(menu_df: pd.DataFrame) -> None:
     )
 
     sns.set_theme()
-    bar_df.plot(kind='barh', stacked=True, color=['green', 'grey', 'lightgrey'], xlabel="Number of Records", title="Applicable Menu Table Attributes")
+    bar_df.plot(kind='barh', stacked=True, color=['green', 'grey', 'lightgrey'], xlabel="Number of Records", title="Applicable Menu Table Attributes", alpha=0.75)
     plt.savefig("doc/menu-bar-chart.png", bbox_inches='tight')
     plt.close()
 
@@ -46,7 +46,7 @@ def explore_menu_table(menu_df: pd.DataFrame) -> None:
 
     assert menu_df[menu_df['decade'] == 1900.0]['decade'].size == menu_df[date_1900s]['date'].size, "Invalid date range assumption"
 
-    menu_df['decade'].plot(kind='hist', x='date', xlabel="Decade", ylabel="Count", title="Number of Menus By Decade", bins=range(1850, 2011, 10))
+    menu_df['decade'].plot(kind='hist', x='date', xlabel="Decade", ylabel="Count", title="Number of Menus By Decade", bins=range(1850, 2011, 10), alpha=0.75)
     plt.savefig("doc/menu-date-histogram.png", bbox_inches='tight')
     plt.close()
 
