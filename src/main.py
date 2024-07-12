@@ -15,6 +15,11 @@ def repair_menu_date_from_call_number(menu_df, page_df, item_df, dish_df) -> Non
     regex = re.compile(r"^[0-9][0-9][0-9][0-9]-.*")
     menu_df.loc[menu_df['date'].isna() & menu_df['call_number'].str.contains(regex, na=False), 'date'] = menu_df['call_number'].str[:4]
 
+def repair_menu_date_outside_expected_range(menu_df, page_df, item_df, dish_df) -> None:
+    menu_df['date'] = menu_df['date'].str.replace(r"^0190", "1900", regex=True) # Typos observed in manual data exploration
+    menu_df['date'] = menu_df['date'].str.replace(r"^1091", "1901", regex=True)
+    menu_df['date'] = menu_df['date'].str.replace(r"^2928", "1928", regex=True)
+
 def timer(func: Callable) -> Callable:
     @functools.wraps(func)
     def wrapper(*args, **kwargs):
@@ -52,7 +57,8 @@ def profile_data(menu_df: pd.DataFrame) -> List[int]:
 @timer
 def clean_data(menu_df: pd.DataFrame, page_df: pd.DataFrame, item_df: pd.DataFrame, dish_df: pd.DataFrame) -> None:
     cleaning_routines = [
-        repair_menu_date_from_call_number
+        repair_menu_date_from_call_number,
+        repair_menu_date_outside_expected_range,
     ]
 
     for cleaning_routine in cleaning_routines:
