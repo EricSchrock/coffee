@@ -73,10 +73,16 @@ conda activate coffee
 
 ## Running the Project
 
+### Exploration
+
 ```sh
 python src/explore.py /path/to/dataset
+```
+
+### Cleaning and Query
+
+```sh
 python src/main.py /path/to/dataset
-python src/bonus.py /path/to/dataset
 ```
 
 ## Testing the Project

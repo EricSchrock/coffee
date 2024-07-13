@@ -1,16 +1,19 @@
 import re
 import sqlite3
 from argparse import ArgumentParser
+from statistics import mean, median
 from typing import List, Tuple
 
+import matplotlib.pyplot as plt
 import pandas as pd
+import seaborn as sns
 
 from main import clean_data, load_data, timer
 from regex import IS_CUP_OF_COFFEE, IS_NEW_YORK
 
 
 @timer
-def query_data(menu_df: pd.DataFrame, page_df: pd.DataFrame, item_df: pd.DataFrame, dish_df: pd.DataFrame) -> List[Tuple[float, float]]:
+def query_data(menu_df: pd.DataFrame, page_df: pd.DataFrame, item_df: pd.DataFrame, dish_df: pd.DataFrame) -> List[Tuple[int, float, float]]:
     menu_df['year'] = pd.to_datetime(menu_df.date, errors='coerce').dt.year
 
     def regexp(expr, item):
@@ -39,11 +42,27 @@ def query_data(menu_df: pd.DataFrame, page_df: pd.DataFrame, item_df: pd.DataFra
 
     con.close()
 
+    results = [ (int(year), price) for year, price in results ]
+    years = sorted(set([ year for year, _ in results]))
+    results = [ (year, mean([ p for y, p in results if y == year]), median([ p for y, p in results if y == year])) for year in years ]
+
     return results
 
 @timer
-def save_query_results(dirty: List[Tuple[float, float]], clean: List[Tuple[float, float]]) -> None:
-    pass #todo: plot median price by year (add to README results section?)
+def save_query_results(results: List[Tuple[int, float, float]]) -> None:
+    x =        [ x for x, _, _ in results ]
+    y_mean =   [ x for _, x, _ in results ]
+    y_median = [ x for _, _, x in results ]
+
+    sns.set_theme()
+    plt.plot(x, y_mean, label="Mean")
+    plt.plot(x, y_median, label="Median")
+    plt.title("Price of a Cup of Coffee in New York")
+    plt.xlabel("Year")
+    plt.ylabel("Price ($)")
+    plt.legend()
+    plt.show()
+    plt.close()
 
 @timer
 def main() -> None:
@@ -53,13 +72,11 @@ def main() -> None:
 
     menu_df, page_df, item_df, dish_df = load_data(args.dataset_path)
 
-    results_dirty = query_data(menu_df, page_df, item_df, dish_df)
-
     clean_data(menu_df, page_df, item_df, dish_df)
 
-    results_clean = query_data(menu_df, page_df, item_df, dish_df)
+    results = query_data(menu_df, page_df, item_df, dish_df)
 
-    save_query_results(results_dirty, results_clean)
+    save_query_results(results)
 
 
 if __name__ == "__main__":
