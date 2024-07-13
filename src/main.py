@@ -156,7 +156,7 @@ def save_menu_profile(dirty: List[int], clean: List[int]) -> None:
 def save_dish_profile(dirty: int, clean: int) -> None:
     sns.set_theme()
     plt.bar(x=['Dirty Data', 'Clean Data'], height=[dirty, clean], alpha=0.75)
-    plt.title('Dishes Synonymous with "Cup of Coffee"')
+    plt.title('Dishes Matching the "is_cup_of_coffee" Regex')
     plt.savefig("doc/dish-name-coffee-bar-chart.png", bbox_inches='tight')
     plt.close()
 
@@ -176,14 +176,14 @@ def save_query_result(dirty: List[float], clean: List[float]) -> None:
     _, y = plt.ylim()
     font = plt.rcParams['font.family']
     plt.rcParams['font.family'] = 'monospace'
-    plt.text(x, y * 0.90, f"Count  (dirty): {len(dirty):4}",      color='r', alpha=0.75)
-    plt.text(x, y * 0.85, f"Max    (dirty): {max(dirty):.2f}",    color='r', alpha=0.75)
-    plt.text(x, y * 0.80, f"Mean   (dirty): {mean(dirty):.2f}",   color='r', alpha=0.75)
-    plt.text(x, y * 0.75, f"Median (dirty): {median(dirty):.2f}", color='r', alpha=0.75)
-    plt.text(x, y * 0.65, f"Count  (clean): {len(clean):4}",      color='b', alpha=0.75)
-    plt.text(x, y * 0.60, f"Max    (clean): {max(clean):.2f}",    color='b', alpha=0.75)
-    plt.text(x, y * 0.55, f"Mean   (clean): {mean(clean):.2f}",   color='b', alpha=0.75)
-    plt.text(x, y * 0.50, f"Median (clean): {median(clean):.2f}", color='b', alpha=0.75)
+    plt.text(x, y * 0.90, f"Count:  {len(dirty):4}",      color='r', alpha=0.75)
+    plt.text(x, y * 0.85, f"Max:    {max(dirty):.2f}",    color='r', alpha=0.75)
+    plt.text(x, y * 0.80, f"Mean:   {mean(dirty):.2f}",   color='r', alpha=0.75)
+    plt.text(x, y * 0.75, f"Median: {median(dirty):.2f}", color='r', alpha=0.75)
+    plt.text(x, y * 0.65, f"Count:  {len(clean):4}",      color='b', alpha=0.75)
+    plt.text(x, y * 0.60, f"Max:    {max(clean):.2f}",    color='b', alpha=0.75)
+    plt.text(x, y * 0.55, f"Mean:   {mean(clean):.2f}",   color='b', alpha=0.75)
+    plt.text(x, y * 0.50, f"Median: {median(clean):.2f}", color='b', alpha=0.75)
     plt.rcParams['font.family'] = font
     plt.savefig(f"doc/coffee-price-histogram.png", bbox_inches='tight')
     plt.close()
