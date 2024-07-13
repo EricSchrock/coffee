@@ -76,6 +76,7 @@ conda activate coffee
 ```sh
 python src/explore.py /path/to/dataset
 python src/main.py /path/to/dataset
+python src/bonus.py /path/to/dataset
 ```
 
 ## Testing the Project
