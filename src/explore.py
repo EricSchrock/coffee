@@ -1,9 +1,10 @@
 from argparse import ArgumentParser
+
 import matplotlib.pyplot as plt
 import pandas as pd
 import seaborn as sns
 
-from regex import is_new_york, is_1900_to_1909, is_dollars
+from regex import is_1900_to_1909, is_dollars, is_new_york
 
 
 def load_data(dataset_path: str) -> pd.DataFrame:

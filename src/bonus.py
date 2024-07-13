@@ -1,11 +1,12 @@
-from argparse import ArgumentParser
-import pandas as pd
 import re
 import sqlite3
+from argparse import ArgumentParser
 from typing import List, Tuple
 
-from main import timer, load_data, clean_data
-from regex import is_new_york, is_cup_of_coffee
+import pandas as pd
+
+from main import clean_data, load_data, timer
+from regex import is_cup_of_coffee, is_new_york
 
 
 @timer

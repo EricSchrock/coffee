@@ -1,16 +1,17 @@
-from argparse import ArgumentParser
 import functools
-import matplotlib.pyplot as plt
-from matplotlib_venn import venn3_unweighted
-import pandas as pd
 import re
-import seaborn as sns
 import sqlite3
+from argparse import ArgumentParser
 from statistics import mean, median
 from time import time
 from typing import Callable, List, Tuple
 
-from regex import is_new_york, is_1900_to_1909, is_dollars, is_cup_of_coffee
+import matplotlib.pyplot as plt
+import pandas as pd
+import seaborn as sns
+from matplotlib_venn import venn3_unweighted
+
+from regex import is_1900_to_1909, is_cup_of_coffee, is_dollars, is_new_york
 
 
 def remove_leading_and_trailing_whitespace(menu_df: pd.DataFrame, page_df: pd.DataFrame, item_df: pd.DataFrame, dish_df: pd.DataFrame) -> None:
