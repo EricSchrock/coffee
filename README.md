@@ -31,7 +31,7 @@ The first target question is tuned to the data available in the dataset.
 
 ## Workflow
 
-TBD (diagram)
+![workflow](doc/workflow.png)
 
 ## Cleaning
 

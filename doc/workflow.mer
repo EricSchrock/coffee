@@ -1,0 +1,86 @@
+flowchart TD
+
+subgraph Inputs
+    menu[(Menu.csv)]
+    page[(MenuPage.csv)]
+    item[(MenuItem.csv)]
+    dish[(Dish.csv)]
+end
+
+menu --> menu_df_dirty
+page --> page_df_dirty
+item --> item_df_dirty
+dish --> dish_df_dirty
+
+subgraph Dirty[Dirty Data]
+    menu_df_dirty([menu_df])
+    page_df_dirty([page_df])
+    item_df_dirty([item_df])
+    dish_df_dirty([dish_df])
+end
+
+menu_df_dirty --> profile_menu_data_dirty[profile_menu_data]
+dish_df_dirty --> profile_dish_data_dirty[profile_dish_data]
+
+menu_df_dirty --> query_data_dirty[query_data]
+page_df_dirty --> query_data_dirty[query_data]
+item_df_dirty --> query_data_dirty[query_data]
+dish_df_dirty --> query_data_dirty[query_data]
+
+menu_df_dirty --> clean_data
+page_df_dirty --> clean_data
+item_df_dirty --> clean_data
+dish_df_dirty --> clean_data
+
+clean_data --> menu_df_clean
+clean_data --> page_df_clean
+clean_data --> item_df_clean
+clean_data --> dish_df_clean
+
+subgraph Clean[Clean Data]
+    menu_df_clean([menu_df])
+    page_df_clean([page_df])
+    item_df_clean([item_df])
+    dish_df_clean([dish_df])
+end
+
+menu_df_clean --> profile_menu_data_clean[profile_menu_data]
+dish_df_clean --> profile_dish_data_clean[profile_dish_data]
+
+menu_df_clean --> query_data_clean[query_data]
+page_df_clean --> query_data_clean[query_data]
+item_df_clean --> query_data_clean[query_data]
+dish_df_clean --> query_data_clean[query_data]
+
+profile_menu_data_dirty --> menu_profile_dirty
+profile_menu_data_clean --> menu_profile_clean
+
+profile_dish_data_dirty --> dish_profile_dirty
+profile_dish_data_clean --> dish_profile_clean
+
+query_data_dirty --> prices_dirty
+query_data_clean --> prices_clean
+
+subgraph Results
+    menu_profile_dirty([menu_profile])
+    menu_profile_clean([menu_profile])
+    dish_profile_dirty([dish_profile])
+    dish_profile_clean([dish_profile])
+    prices_dirty([prices])
+    prices_clean([prices])
+end
+
+menu_profile_dirty --> save_menu_profile --> menu_venn_diagram
+menu_profile_clean --> save_menu_profile
+
+dish_profile_dirty --> save_dish_profile --> dish_name_coffee_bar_chart
+dish_profile_clean --> save_dish_profile
+
+prices_dirty --> save_query_result --> coffee_price_histogram
+prices_clean --> save_query_result
+
+subgraph Reports
+    menu_venn_diagram([menu-venn-diagram.png])
+    dish_name_coffee_bar_chart([dish-name-coffee-bar-chart.png])
+    coffee_price_histogram([coffee-price-histogram.png])
+end
