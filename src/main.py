@@ -163,8 +163,10 @@ def save_dish_profile(dirty: int, clean: int) -> None:
 
 @timer
 def save_query_result(dirty: List[float], clean: List[float]) -> None:
+    width = 5
+    bins = [ x / 100 for x in range(0, int(max(dirty + clean) * 100) + width, width)]
     sns.set_theme()
-    plt.hist([dirty, clean], color=['r','b'], alpha=0.75)
+    plt.hist([dirty, clean], bins=bins, color=['r','b'], alpha=0.75)
     plt.title("Price of a Cup of Coffee in New York State (1900 - 1909)")
     plt.xlabel("Price ($)")
     plt.ylabel("Menu Appearances (count)")
@@ -173,7 +175,7 @@ def save_query_result(dirty: List[float], clean: List[float]) -> None:
     plt.axvline(median(dirty), color='r', linestyle='dashed', linewidth=1, alpha=0.75)
     plt.axvline(mean(clean),   color='b', linestyle='dashed', linewidth=1, alpha=0.75)
     plt.axvline(median(clean), color='b', linestyle='dashed', linewidth=1, alpha=0.75)
-    x = max([mean(dirty), median(dirty), mean(clean), median(clean)]) * 1.5
+    x = max([mean(dirty), median(dirty), mean(clean), median(clean)]) * 1.7
     _, y = plt.ylim()
     font = plt.rcParams['font.family']
     plt.rcParams['font.family'] = 'monospace'
