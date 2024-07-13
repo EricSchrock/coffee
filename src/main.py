@@ -11,16 +11,16 @@ import pandas as pd
 import seaborn as sns
 from matplotlib_venn import venn3_unweighted
 
-from regex import is_1900_to_1909, is_cup_of_coffee, is_dollars, is_new_york
+from regex import IS_1900_TO_1909, IS_CUP_OF_COFFEE, IS_DOLLARS, IS_NEW_YORK
 
 
 def remove_leading_and_trailing_whitespace(menu_df: pd.DataFrame, page_df: pd.DataFrame, item_df: pd.DataFrame, dish_df: pd.DataFrame) -> None:
-    menu_df['date'] = menu_df['date'].apply(lambda x: x.strip() if type(x) == str else x)
-    menu_df['call_number'] = menu_df['call_number'].apply(lambda x: x.strip() if type(x) == str else x)
-    menu_df['place'] = menu_df['place'].apply(lambda x: x.strip() if type(x) == str else x)
-    menu_df['currency'] = menu_df['currency'].apply(lambda x: x.strip() if type(x) == str else x)
-    item_df['price'] = item_df['price'].apply(lambda x: x.strip() if type(x) == str else x)
-    dish_df['name'] = dish_df['name'].apply(lambda x: x.strip() if type(x) == str else x)
+    menu_df['date'] = menu_df['date'].apply(lambda x: x.strip() if isinstance(x, str) else x)
+    menu_df['call_number'] = menu_df['call_number'].apply(lambda x: x.strip() if isinstance(x, str) else x)
+    menu_df['place'] = menu_df['place'].apply(lambda x: x.strip() if isinstance(x, str) else x)
+    menu_df['currency'] = menu_df['currency'].apply(lambda x: x.strip() if isinstance(x, str) else x)
+    item_df['price'] = item_df['price'].apply(lambda x: x.strip() if isinstance(x, str) else x)
+    dish_df['name'] = dish_df['name'].apply(lambda x: x.strip() if isinstance(x, str) else x)
 
 def repair_menu_date_from_call_number(menu_df: pd.DataFrame, page_df: pd.DataFrame, item_df: pd.DataFrame, dish_df: pd.DataFrame) -> None:
     regex = r"^[0-9][0-9][0-9][0-9]-.*"
@@ -69,9 +69,9 @@ def load_data(dataset_path: str) -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFra
 
 @timer
 def profile_menu_data(menu_df: pd.DataFrame) -> List[int]:
-    place_ny         =  menu_df['place']   .str.contains(is_new_york,     na=False)
-    date_1900s       =  menu_df['date']    .str.contains(is_1900_to_1909, na=False)
-    currency_dollars =  menu_df['currency'].str.contains(is_dollars,      na=False)
+    place_ny         =  menu_df['place']   .str.contains(IS_NEW_YORK,     na=False)
+    date_1900s       =  menu_df['date']    .str.contains(IS_1900_TO_1909, na=False)
+    currency_dollars =  menu_df['currency'].str.contains(IS_DOLLARS,      na=False)
 
     return [
         menu_df[ place_ny & ~date_1900s & ~currency_dollars]['id'].size,
@@ -85,7 +85,7 @@ def profile_menu_data(menu_df: pd.DataFrame) -> List[int]:
 
 @timer
 def profile_dish_data(dish_df: pd.DataFrame) -> int:
-    return dish_df[dish_df['name'].str.contains(is_cup_of_coffee, na=False)].size
+    return dish_df[dish_df['name'].str.contains(IS_CUP_OF_COFFEE, na=False)].size
 
 @timer
 def query_data(menu_df: pd.DataFrame, page_df: pd.DataFrame, item_df: pd.DataFrame, dish_df: pd.DataFrame) -> List[float]:
@@ -114,7 +114,7 @@ def query_data(menu_df: pd.DataFrame, page_df: pd.DataFrame, item_df: pd.DataFra
         AND dish_id IN (SELECT id FROM dish WHERE dish.name IS NOT NULL AND dish.name REGEXP ?)
         AND price IS NOT NULL
         AND price < 1;
-        """, [is_new_york, is_cup_of_coffee]).fetchall()
+        """, [IS_NEW_YORK, IS_CUP_OF_COFFEE]).fetchall()
 
     con.close()
 
@@ -186,7 +186,7 @@ def save_query_result(dirty: List[float], clean: List[float]) -> None:
     plt.text(x, y * 0.55, f"Mean:   {mean(clean):.2f}",   color='b', alpha=0.75)
     plt.text(x, y * 0.50, f"Median: {median(clean):.2f}", color='b', alpha=0.75)
     plt.rcParams['font.family'] = font
-    plt.savefig(f"doc/coffee-price-histogram.png", bbox_inches='tight')
+    plt.savefig("doc/coffee-price-histogram.png", bbox_inches='tight')
     plt.close()
 
 @timer

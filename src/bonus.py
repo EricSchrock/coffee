@@ -6,7 +6,7 @@ from typing import List, Tuple
 import pandas as pd
 
 from main import clean_data, load_data, timer
-from regex import is_cup_of_coffee, is_new_york
+from regex import IS_CUP_OF_COFFEE, IS_NEW_YORK
 
 
 @timer
@@ -35,7 +35,7 @@ def query_data(menu_df: pd.DataFrame, page_df: pd.DataFrame, item_df: pd.DataFra
         AND menu.place IS NOT NULL AND menu.place REGEXP ?
         AND menu.currency = "Dollars"
         AND item.price IS NOT NULL AND item.price < 1;
-        """, [is_cup_of_coffee, is_new_york]).fetchall()
+        """, [IS_CUP_OF_COFFEE, IS_NEW_YORK]).fetchall()
 
     con.close()
 

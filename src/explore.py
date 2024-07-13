@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import seaborn as sns
 
-from regex import is_1900_to_1909, is_dollars, is_new_york
+from regex import IS_1900_TO_1909, IS_DOLLARS, IS_NEW_YORK
 
 
 def load_data(dataset_path: str) -> pd.DataFrame:
@@ -12,16 +12,16 @@ def load_data(dataset_path: str) -> pd.DataFrame:
     return menu_df
 
 def explore_menu_table(menu_df: pd.DataFrame) -> None:
-    place_ny    =  menu_df['place'].str.contains(is_new_york, na=False)
-    place_other = ~menu_df['place'].str.contains(is_new_york, na=False) & menu_df['place'].notnull()
+    place_ny    =  menu_df['place'].str.contains(IS_NEW_YORK, na=False)
+    place_other = ~menu_df['place'].str.contains(IS_NEW_YORK, na=False) & menu_df['place'].notnull()
     place_null  =  menu_df['place'].isna()
 
-    date_1900s =  menu_df['date'].str.contains(is_1900_to_1909, na=False)
-    date_other = ~menu_df['date'].str.contains(is_1900_to_1909, na=False) & menu_df['date'].notnull()
+    date_1900s =  menu_df['date'].str.contains(IS_1900_TO_1909, na=False)
+    date_other = ~menu_df['date'].str.contains(IS_1900_TO_1909, na=False) & menu_df['date'].notnull()
     date_null  =  menu_df['date'].isna()
 
-    currency_dollars =  menu_df['currency'].str.contains(is_dollars, na=False)
-    currency_other   = ~menu_df['currency'].str.contains(is_dollars, na=False) & menu_df['currency'].notnull()
+    currency_dollars =  menu_df['currency'].str.contains(IS_DOLLARS, na=False)
+    currency_other   = ~menu_df['currency'].str.contains(IS_DOLLARS, na=False) & menu_df['currency'].notnull()
     currency_null    =  menu_df['currency'].isna()
 
     assert (menu_df[place_ny]['place'].size + menu_df[place_other]['place'].size + menu_df[place_null]['place'].size) == menu_df['place'].size, "Invalid place value assumptions"
