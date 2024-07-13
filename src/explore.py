@@ -4,13 +4,16 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import seaborn as sns
 
+from main import timer
 from regex import IS_1900_TO_1909, IS_DOLLARS, IS_NEW_YORK
 
 
+@timer
 def load_data(dataset_path: str) -> pd.DataFrame:
     menu_df = pd.read_csv(f"{dataset_path}/Menu.csv")
     return menu_df
 
+@timer
 def explore_menu_table(menu_df: pd.DataFrame) -> None:
     place_ny    =  menu_df['place'].str.contains(IS_NEW_YORK, na=False)
     place_other = ~menu_df['place'].str.contains(IS_NEW_YORK, na=False) & menu_df['place'].notnull()
@@ -51,6 +54,7 @@ def explore_menu_table(menu_df: pd.DataFrame) -> None:
     plt.savefig("doc/menu-date-histogram.png", bbox_inches='tight')
     plt.close()
 
+@timer
 def main() -> None:
     parser = ArgumentParser()
     parser.add_argument('dataset_path', help='Path to the directory of the dataset to run on')
