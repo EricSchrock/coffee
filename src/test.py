@@ -3,7 +3,8 @@ from unittest import TestCase
 
 import pandas as pd
 
-from main import (profile_menu_data, remove_leading_and_trailing_whitespace,
+from main import (profile_dish_data, profile_menu_data,
+                  remove_leading_and_trailing_whitespace,
                   repair_dish_name_coffee_spelling,
                   repair_menu_currency_convert_cents_to_dollars,
                   repair_menu_currency_dollars_spelling,
@@ -202,7 +203,14 @@ class TestMain(TestCase):
         self.assertListEqual(profile, [1,1,1,1,1,1,2])
 
     def test_profile_dish_data(self):
-        pass
+        dish_df = pd.DataFrame({
+            'id':   [1,        2,        3,        4,  5 ],
+            'name': ["Coffee", "Coffee", "Coffee", "", ""],
+        })
+
+        profile = profile_dish_data.__wrapped__(dish_df)
+
+        self.assertEqual(profile, 3)
 
     def test_query_data(self):
         pass
