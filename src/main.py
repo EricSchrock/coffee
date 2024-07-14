@@ -85,7 +85,7 @@ def profile_menu_data(menu_df: pd.DataFrame) -> List[int]:
 
 @timer
 def profile_dish_data(dish_df: pd.DataFrame) -> int:
-    return dish_df[dish_df['name'].str.contains(IS_CUP_OF_COFFEE, na=False)].size
+    return dish_df[dish_df['name'].str.contains(IS_CUP_OF_COFFEE, na=False)]['id'].size
 
 @timer
 def query_data(menu_df: pd.DataFrame, page_df: pd.DataFrame, item_df: pd.DataFrame, dish_df: pd.DataFrame) -> List[float]:
