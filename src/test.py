@@ -4,7 +4,8 @@ from unittest import TestCase
 import pandas as pd
 
 from main import (remove_leading_and_trailing_whitespace,
-                  repair_menu_date_from_call_number)
+                  repair_menu_date_from_call_number,
+                  repair_menu_date_outside_expected_range)
 from regex import IS_1900_TO_1909, IS_CUP_OF_COFFEE, IS_DOLLARS, IS_NEW_YORK
 
 
@@ -120,3 +121,16 @@ class TestMain(TestCase):
         self.assertTrue(isnan(menu_df['date'].iloc[2]))
         self.assertTrue(isnan(menu_df['date'].iloc[3]))
         self.assertTrue(isnan(menu_df['date'].iloc[4]))
+
+    def test_repair_menu_date_outside_expected_range(self):
+        menu_df = pd.DataFrame({'date': ["0190-01-01", "1091-05-05", "2928-12-31", "12/31/2928"]})
+        page_df = pd.DataFrame()
+        item_df = pd.DataFrame()
+        dish_df = pd.DataFrame()
+
+        repair_menu_date_outside_expected_range(menu_df, page_df, item_df, dish_df)
+
+        self.assertEqual(menu_df['date'].iloc[0], "1900-01-01")
+        self.assertEqual(menu_df['date'].iloc[1], "1901-05-05")
+        self.assertEqual(menu_df['date'].iloc[2], "1928-12-31")
+        self.assertEqual(menu_df['date'].iloc[3], "12/31/2928")
