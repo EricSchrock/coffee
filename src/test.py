@@ -1,5 +1,8 @@
 from unittest import TestCase
 
+import pandas as pd
+
+from main import remove_leading_and_trailing_whitespace
 from regex import IS_1900_TO_1909, IS_CUP_OF_COFFEE, IS_DOLLARS, IS_NEW_YORK
 
 
@@ -86,9 +89,17 @@ class TestRegex(TestCase):
         self.assertNotRegex("Coffee buns", IS_CUP_OF_COFFEE)
 
 class TestMain(TestCase):
-    def test(self):
-        pass
+    def test_remove_leading_and_trailing_whitespace(self):
+        menu_df = pd.DataFrame({'date': ["1900\n"], 'call_number': ["  1900-123  "], 'place': ["   Albany, NY"], 'currency': ["\tDollars\r\n"]})
+        page_df = pd.DataFrame()
+        item_df = pd.DataFrame({'price': [0.25]})
+        dish_df = pd.DataFrame({'name': ["  Cup of Coffee"]})
 
-class TestBonus(TestCase):
-    def test(self):
-        pass
+        remove_leading_and_trailing_whitespace(menu_df, page_df, item_df, dish_df)
+
+        self.assertEqual(menu_df['date'].iloc[0], "1900")
+        self.assertEqual(menu_df['call_number'].iloc[0], "1900-123")
+        self.assertEqual(menu_df['place'].iloc[0], "Albany, NY")
+        self.assertEqual(menu_df['currency'].iloc[0], "Dollars")
+        self.assertEqual(item_df['price'].iloc[0], 0.25)
+        self.assertEqual(dish_df['name'].iloc[0], "Cup of Coffee")
