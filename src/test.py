@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from regex import IS_1900_TO_1909, IS_DOLLARS, IS_NEW_YORK
+from regex import IS_1900_TO_1909, IS_CUP_OF_COFFEE, IS_DOLLARS, IS_NEW_YORK
 
 
 class TestRegex(TestCase):
@@ -56,6 +56,34 @@ class TestRegex(TestCase):
         self.assertNotRegex("Canadian Dollars", IS_DOLLARS)
         self.assertNotRegex("Australian Dollars", IS_DOLLARS)
         self.assertNotRegex("Dollars and Cents", IS_DOLLARS)
+
+    def test_regex_is_cup_of_coffee(self):
+        self.assertRegex("Coffee", IS_CUP_OF_COFFEE)
+        self.assertRegex("coffee", IS_CUP_OF_COFFEE)
+        self.assertRegex("COFFEE", IS_CUP_OF_COFFEE)
+        self.assertRegex("cOFFEe", IS_CUP_OF_COFFEE)
+
+        self.assertNotRegex("toffee", IS_CUP_OF_COFFEE)
+
+        self.assertRegex("Cup of coffee", IS_CUP_OF_COFFEE)
+        self.assertRegex("Black coffee", IS_CUP_OF_COFFEE)
+        self.assertRegex("Goblet of coffee", IS_CUP_OF_COFFEE)
+        self.assertRegex("Coffee, mug", IS_CUP_OF_COFFEE)
+        self.assertRegex("Glass of fine coffee", IS_CUP_OF_COFFEE)
+        self.assertRegex("Our best coffee, size demi-tasse", IS_CUP_OF_COFFEE)
+
+        self.assertNotRegex("A gigantic pot of coffee", IS_CUP_OF_COFFEE)
+        self.assertNotRegex("Coffee by the pound", IS_CUP_OF_COFFEE)
+        self.assertNotRegex("Coffee, all you can drink", IS_CUP_OF_COFFEE)
+        self.assertNotRegex("Cups of coffee for two", IS_CUP_OF_COFFEE)
+
+        self.assertNotRegex("Coffee with cream", IS_CUP_OF_COFFEE)
+        self.assertNotRegex("Iced Coffee", IS_CUP_OF_COFFEE)
+        self.assertNotRegex("Cup of coffee with milk", IS_CUP_OF_COFFEE)
+
+        self.assertNotRegex("Coffee cake", IS_CUP_OF_COFFEE)
+        self.assertNotRegex("Coffee beans", IS_CUP_OF_COFFEE)
+        self.assertNotRegex("Coffee buns", IS_CUP_OF_COFFEE)
 
 class TestMain(TestCase):
     def test(self):
