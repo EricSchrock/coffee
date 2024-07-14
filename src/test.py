@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from regex import IS_1900_TO_1909, IS_NEW_YORK
+from regex import IS_1900_TO_1909, IS_DOLLARS, IS_NEW_YORK
 
 
 class TestRegex(TestCase):
@@ -46,6 +46,16 @@ class TestRegex(TestCase):
         self.assertNotRegex("1910-01-01", IS_1900_TO_1909)
 
         self.assertNotRegex("12/05/1905", IS_1900_TO_1909)
+
+    def test_regex_is_dollars(self):
+        self.assertRegex("Dollars", IS_DOLLARS)
+        self.assertRegex("dollars", IS_DOLLARS)
+        self.assertRegex("DOLLARS", IS_DOLLARS)
+        self.assertRegex("dOlLaRs", IS_DOLLARS)
+
+        self.assertNotRegex("Canadian Dollars", IS_DOLLARS)
+        self.assertNotRegex("Australian Dollars", IS_DOLLARS)
+        self.assertNotRegex("Dollars and Cents", IS_DOLLARS)
 
 class TestMain(TestCase):
     def test(self):
