@@ -237,5 +237,3 @@ class TestMain(TestCase):
         result = query_data.__wrapped__(menu_df, page_df, item_df, dish_df)
 
         self.assertListEqual(sorted(result), [0.05, 0.1])
-
-
