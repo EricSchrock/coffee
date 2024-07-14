@@ -5,7 +5,8 @@ import pandas as pd
 
 from main import (remove_leading_and_trailing_whitespace,
                   repair_menu_date_from_call_number,
-                  repair_menu_date_outside_expected_range)
+                  repair_menu_date_outside_expected_range,
+                  repair_menu_place_new_york_spelling)
 from regex import IS_1900_TO_1909, IS_CUP_OF_COFFEE, IS_DOLLARS, IS_NEW_YORK
 
 
@@ -136,7 +137,17 @@ class TestMain(TestCase):
         self.assertEqual(menu_df['date'].iloc[3], "12/31/2928")
 
     def test_repair_menu_place_new_york_spelling(self):
-        pass
+        menu_df = pd.DataFrame({'place': ["Now Yurk", "New Y0rk", "Ne York", "Nwe York"]})
+        page_df = pd.DataFrame()
+        item_df = pd.DataFrame()
+        dish_df = pd.DataFrame()
+
+        repair_menu_place_new_york_spelling(menu_df, page_df, item_df, dish_df)
+
+        self.assertEqual(menu_df['place'].iloc[0], "Now Yurk")
+        self.assertEqual(menu_df['place'].iloc[1], "New York")
+        self.assertEqual(menu_df['place'].iloc[2], "New York")
+        self.assertEqual(menu_df['place'].iloc[3], "New York")
 
     def test_repair_menu_currency_dollars_spelling(self):
         pass

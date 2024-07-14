@@ -33,7 +33,7 @@ def repair_menu_date_outside_expected_range(menu_df: pd.DataFrame, page_df: pd.D
 
 def repair_menu_place_new_york_spelling(menu_df: pd.DataFrame, page_df: pd.DataFrame, item_df: pd.DataFrame, dish_df: pd.DataFrame) -> None:
     regex = r"(?i)enw york|nwe york|ne wyork|newy ork|new yrok|new yokr|\bew york|nw york|ne york|newyork|new ork|new yrk|new yok|new yor\b|[^n]ew york|n[^e]w york|ne[^w] york|new[^ ]york|new [^y]ork|new y[^o]rk|new yo[^r]k|new yor[^k]"
-    menu_df['place'] = menu_df['place'].str.replace(regex, 'NEW YORK', regex=True)
+    menu_df['place'] = menu_df['place'].str.replace(regex, 'New York', regex=True)
 
 def repair_menu_currency_dollars_spelling(menu_df: pd.DataFrame, page_df: pd.DataFrame, item_df: pd.DataFrame, dish_df: pd.DataFrame) -> None:
     regex = r"(?i)^(?:odllars|dlolars|dolalrs|dollras|dollasr|ollars|dllars|dolars|dollrs|dollas|dollar|[^d]ollars|d[^o]llars|do[^l]lars|dol[^l]ars|doll[^a]rs|dolla[^r]s|dollar[^s])$"
