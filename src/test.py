@@ -1,8 +1,10 @@
+from math import isnan
 from unittest import TestCase
 
 import pandas as pd
 
-from main import remove_leading_and_trailing_whitespace
+from main import (remove_leading_and_trailing_whitespace,
+                  repair_menu_date_from_call_number)
 from regex import IS_1900_TO_1909, IS_CUP_OF_COFFEE, IS_DOLLARS, IS_NEW_YORK
 
 
@@ -103,3 +105,18 @@ class TestMain(TestCase):
         self.assertEqual(menu_df['currency'].iloc[0], "Dollars")
         self.assertEqual(item_df['price'].iloc[0], 0.25)
         self.assertEqual(dish_df['name'].iloc[0], "Cup of Coffee")
+
+    def test_repair_menu_date_from_call_number(self):
+        menu_df = pd.DataFrame({'date': ["1900", float("nan"), float("nan"), float("nan"), float("nan")], 'call_number': ["1899-01", "1899-02", "Other", "", float("nan")]})
+        page_df = pd.DataFrame()
+        item_df = pd.DataFrame()
+        dish_df = pd.DataFrame()
+
+        repair_menu_date_from_call_number(menu_df, page_df, item_df, dish_df)
+
+        self.assertEqual(menu_df['date'].iloc[0], "1900")
+        self.assertEqual(menu_df['date'].iloc[1], "1899")
+
+        self.assertTrue(isnan(menu_df['date'].iloc[2]))
+        self.assertTrue(isnan(menu_df['date'].iloc[3]))
+        self.assertTrue(isnan(menu_df['date'].iloc[4]))
