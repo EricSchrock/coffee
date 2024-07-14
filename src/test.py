@@ -3,7 +3,7 @@ from unittest import TestCase
 
 import pandas as pd
 
-from main import (remove_leading_and_trailing_whitespace,
+from main import (profile_menu_data, remove_leading_and_trailing_whitespace,
                   repair_dish_name_coffee_spelling,
                   repair_menu_currency_convert_cents_to_dollars,
                   repair_menu_currency_dollars_spelling,
@@ -190,7 +190,16 @@ class TestMain(TestCase):
         self.assertEqual(dish_df['name'].iloc[3], "Coffee")
 
     def test_profile_menu_data(self):
-        pass
+        menu_df = pd.DataFrame({
+            'id':       [1,         2,         3,      4,         5,    6,         7,      8,         9 ],
+            'place':    ["NY",      "NY",      "NY",   "NY",      "NY", "",        "",     "",        ""],
+            'date':     ["1900",    "1900",    "1900", "",        "",   "1900",    "1900", "",        ""],
+            'currency': ["Dollars", "Dollars", "",     "Dollars", "",   "Dollars", "",     "Dollars", ""],
+        })
+
+        profile = profile_menu_data.__wrapped__(menu_df)
+
+        self.assertListEqual(profile, [1,1,1,1,1,1,2])
 
     def test_profile_dish_data(self):
         pass
