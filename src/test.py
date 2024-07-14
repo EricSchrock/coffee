@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from regex import IS_NEW_YORK
+from regex import IS_1900_TO_1909, IS_NEW_YORK
 
 
 class TestRegex(TestCase):
@@ -26,6 +26,26 @@ class TestRegex(TestCase):
 
         self.assertRegex("new yorker", IS_NEW_YORK)
         self.assertRegex("new yorkers", IS_NEW_YORK)
+
+        self.assertRegex("Albany, NY", IS_NEW_YORK)
+        self.assertRegex("Some random place in New York", IS_NEW_YORK)
+        self.assertRegex("New York? Maybe?", IS_NEW_YORK)
+        self.assertRegex("Fancy Restaurant [NY]", IS_NEW_YORK)
+
+    def test_regex_is_1900_to_1909(self):
+        self.assertRegex("1900", IS_1900_TO_1909)
+        self.assertRegex("1909", IS_1900_TO_1909)
+
+        self.assertNotRegex("1899", IS_1900_TO_1909)
+        self.assertNotRegex("1910", IS_1900_TO_1909)
+
+        self.assertRegex("1900-01-01", IS_1900_TO_1909)
+        self.assertRegex("1909-12-31", IS_1900_TO_1909)
+
+        self.assertNotRegex("1899-12-31", IS_1900_TO_1909)
+        self.assertNotRegex("1910-01-01", IS_1900_TO_1909)
+
+        self.assertNotRegex("12/05/1905", IS_1900_TO_1909)
 
 class TestMain(TestCase):
     def test(self):
