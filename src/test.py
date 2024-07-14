@@ -4,6 +4,7 @@ from unittest import TestCase
 import pandas as pd
 
 from main import (remove_leading_and_trailing_whitespace,
+                  repair_dish_name_coffee_spelling,
                   repair_menu_currency_dollars_spelling,
                   repair_menu_date_from_call_number,
                   repair_menu_date_outside_expected_range,
@@ -167,7 +168,17 @@ class TestMain(TestCase):
         pass
 
     def test_repair_dish_name_coffee_spelling(self):
-        pass
+        menu_df = pd.DataFrame()
+        page_df = pd.DataFrame()
+        item_df = pd.DataFrame()
+        dish_df = pd.DataFrame({'name': ["Caffe", "Caffee", "Coffe", "Cofefe"]})
+
+        repair_dish_name_coffee_spelling(menu_df, page_df, item_df, dish_df)
+
+        self.assertEqual(dish_df['name'].iloc[0], "Caffe")
+        self.assertEqual(dish_df['name'].iloc[1], "Coffee")
+        self.assertEqual(dish_df['name'].iloc[2], "Coffee")
+        self.assertEqual(dish_df['name'].iloc[3], "Coffee")
 
     def test_profile_menu_data(self):
         pass
