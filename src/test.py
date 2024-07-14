@@ -5,6 +5,7 @@ import pandas as pd
 
 from main import (remove_leading_and_trailing_whitespace,
                   repair_dish_name_coffee_spelling,
+                  repair_menu_currency_convert_cents_to_dollars,
                   repair_menu_currency_dollars_spelling,
                   repair_menu_date_from_call_number,
                   repair_menu_date_outside_expected_range,
@@ -165,7 +166,15 @@ class TestMain(TestCase):
         self.assertEqual(menu_df['currency'].iloc[3], "Dollars")
 
     def test_repair_menu_currency_convert_cents_to_dollars(self):
-        pass
+        menu_df = pd.DataFrame({'id': [1], 'currency': ["Cents"]})
+        page_df = pd.DataFrame({'id': [2], 'menu_id': [1]})
+        item_df = pd.DataFrame({'menu_page_id': [2], 'price': [10.0]})
+        dish_df = pd.DataFrame()
+
+        repair_menu_currency_convert_cents_to_dollars(menu_df, page_df, item_df, dish_df)
+
+        self.assertEqual(menu_df['currency'].iloc[0], "Dollars")
+        self.assertEqual(item_df['price'].iloc[0], 0.1)
 
     def test_repair_dish_name_coffee_spelling(self):
         menu_df = pd.DataFrame()
