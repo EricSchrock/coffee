@@ -134,3 +134,27 @@ class TestMain(TestCase):
         self.assertEqual(menu_df['date'].iloc[1], "1901-05-05")
         self.assertEqual(menu_df['date'].iloc[2], "1928-12-31")
         self.assertEqual(menu_df['date'].iloc[3], "12/31/2928")
+
+    def test_repair_menu_place_new_york_spelling(self):
+        pass
+
+    def test_repair_menu_currency_dollars_spelling(self):
+        pass
+
+    def test_repair_menu_currency_convert_cents_to_dollars(self):
+        pass
+
+    def test_repair_dish_name_coffee_spelling(self):
+        pass
+
+    def test_profile_menu_data(self):
+        pass
+
+    def test_profile_dish_data(self):
+        pass
+
+    def test_query_data(self):
+        pass
+
+    def test_clean_data(self):
+        pass
