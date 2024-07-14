@@ -3,7 +3,7 @@ from unittest import TestCase
 
 import pandas as pd
 
-from main import (profile_dish_data, profile_menu_data, query_data,
+from main import (clean_data, profile_dish_data, profile_menu_data, query_data,
                   remove_leading_and_trailing_whitespace,
                   repair_dish_name_coffee_spelling,
                   repair_menu_currency_convert_cents_to_dollars,
@@ -223,4 +223,19 @@ class TestMain(TestCase):
         self.assertListEqual(sorted(result), [0.05, 0.1])
 
     def test_clean_data(self):
-        pass
+        menu_df = pd.DataFrame({'id': [1, 2], 'date': [float('nan'), "1899"], 'place': ["New Yrok", "Albany, NY"], 'currency': ["  Cents\t", "Dollars"], 'call_number': ["1900-123", float('nan')]})
+        page_df = pd.DataFrame({'id': [2], 'menu_id': [1]})
+        item_df = pd.DataFrame({'menu_page_id': [2, 2, 2], 'dish_id': [1, 2, 3], 'price': [5.0, 10.0, 20.0]})
+        dish_df = pd.DataFrame({'id': [1, 2, 3], 'name': [" \n Cofee (demi-tasse)", "\nCaffee  ", "Eggs\r\n"]})
+
+        result = query_data.__wrapped__(menu_df, page_df, item_df, dish_df)
+
+        self.assertListEqual(sorted(result), [])
+
+        clean_data.__wrapped__(menu_df, page_df, item_df, dish_df)
+
+        result = query_data.__wrapped__(menu_df, page_df, item_df, dish_df)
+
+        self.assertListEqual(sorted(result), [0.05, 0.1])
+
+
