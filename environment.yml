@@ -11,4 +11,3 @@ dependencies:
   - seaborn=0.13
   - types-seaborn=0.13
   - mypy=1.10
-  - pytest=8.2
